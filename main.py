@@ -445,3 +445,35 @@ async def get_session_history_by_id(session_id: str, token: str):
         conversation.append({"query": interaction["query"], "response": interaction["response"]})
 
     return {"session_id": session_id, "conversation": conversation}
+
+@app.get("/get_all_places/{session_id}")
+async def get_all_places(session_id: str, token: str):
+    username = verify_jwt_token(token)
+    if not username:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+    
+    session_data = get_session(session_id)
+    if not session_data:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+    if session_data.get("username") != username:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access to this session is forbidden")
+    
+    json_filename = f"session_{session_id}_data.json"
+    try:
+        with open(json_filename, "r") as file:
+            session_data = json.load(file)
+    except FileNotFoundError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session data not found")
+    
+    tourism_data = session_data.get("tourism_activities", [])
+    places = []
+    for place in tourism_data:
+        place_info = {
+            "name": place.get("name"),
+            "longitude": place.get("geoCode", {}).get("longitude"),
+            "latitude": place.get("geoCode", {}).get("latitude"),
+            "pictures": place.get("pictures", [])
+        }
+        places.append(place_info)
+    
+    return {"places": places, "session_id": session_id}

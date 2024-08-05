@@ -144,6 +144,41 @@ This documentation provides a detailed explanation of the API routes for your ap
 
 ---
 
+### **8. Get All Places**
+
+* **Endpoint:** `/get_all_places/{session_id}`
+* **Method:** `GET`
+* **Purpose:** Retrieve a list of all places associated with a specific session.
+* **Input:**
+  * **Path Parameter:**
+    * `session_id`: The ID of the session from which to retrieve the places (string).
+  * **Query Parameter:**
+    * `token`: JWT token for authentication (string).
+* **Output:**
+  * **Success:** Returns a JSON response containing a list of places with the following details for each place:
+    * `name`: Name of the place (string).
+    * `longitude`: Longitude of the place (float).
+    * `latitude`: Latitude of the place (float).		
+    * `pictures`: An array of URLs pointing to images of the place (array of strings).
+    * `session_id`: The ID of the session associated with the retrieved places.
+  * **Failure:**
+    * `401 Unauthorized`: If the provided token is invalid or missing.
+    * `403 Forbidden`: If the session does not belong to the authenticated user.
+    * `404 Not Found`: If the session ID or the session data is not found.
+* **Usage:** Used to retrieve and display all places that are linked to a specific session, useful for providing users with a summarized view of the places they have interacted with or queried during a session.
+
+---
+
+### Authentication:
+
+* All protected routes require a valid JWT token provided in the request headers as `Authorization: Bearer <token>`.
+
+### Error Handling:
+
+* Each endpoint includes error handling for scenarios like invalid credentials, unauthorized access, session not found, and internal server errors. Ensure that your frontend properly handles these error responses and displays appropriate messages to the user.
+
+---
+
 ### **Authentication:**
 
 * All protected routes require a valid JWT token provided in the request headers as `Authorization: Bearer <token>`.
