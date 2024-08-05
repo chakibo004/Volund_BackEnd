@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+requests
+openai
+bcrypt
+jwt
+python-dotenv
+passlib
+jose
