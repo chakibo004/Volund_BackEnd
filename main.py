@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, status, Depends
+from fastapi import FastAPI, HTTPException, status, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
@@ -98,11 +98,7 @@ class QueryPlace(BaseModel):
     session_id: Optional[str] = None
     question: Optional[str] = ""
 
-
-
 # Password hashing and authentication
-
-
 
 def authenticate_user(username: str, password: str):
     user = users_collection.find_one({"username": username})
@@ -414,7 +410,10 @@ async def query_place(query: QueryPlace):
     return {"response": ai_response_content, "session_id": session_id}
 
 @app.post("/query_ai")
-async def query_ai_with_session(query: str, token: str, session_id: Optional[str] = None):
+async def query_ai_with_session(    
+    query: str = Body(..., embed=True),
+    token: str = Body(..., embed=True),
+    session_id: Optional[str] = Body(None, embed=True)):
     username = verify_jwt_token(token)
     if not username:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
