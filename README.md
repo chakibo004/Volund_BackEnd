@@ -169,16 +169,6 @@ This documentation provides a detailed explanation of the API routes for your ap
 
 ---
 
-### Authentication:
-
-* All protected routes require a valid JWT token provided in the request headers as `Authorization: Bearer <token>`.
-
-### Error Handling:
-
-* Each endpoint includes error handling for scenarios like invalid credentials, unauthorized access, session not found, and internal server errors. Ensure that your frontend properly handles these error responses and displays appropriate messages to the user.
-
----
-
 ### **Authentication:**
 
 * All protected routes require a valid JWT token provided in the request headers as `Authorization: Bearer <token>`.
