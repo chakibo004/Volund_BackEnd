@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, status, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import os
@@ -16,6 +17,23 @@ from bson import ObjectId
 from fastapi.encoders import jsonable_encoder
 
 load_dotenv()
+
+app = FastAPI()
+
+# CORS middleware configuration
+origins = [
+    "http://localhost:3000",
+    "http://localhost", 
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"], 
+)
+
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 AI71_API_KEY = os.getenv("AI71_API_KEY")
