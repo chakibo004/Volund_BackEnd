@@ -20,20 +20,14 @@ load_dotenv()
 
 app = FastAPI()
 
-# CORS middleware configuration
-origins = [
-    "http://localhost:3000",
-    "http://localhost", 
-]
-
+# Add CORS middleware to allow requests from any origin
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  
+    allow_origins=["*"],  # Allow all origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"], 
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
 )
-
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 AI71_API_KEY = os.getenv("AI71_API_KEY")
